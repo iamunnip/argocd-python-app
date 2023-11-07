@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      
+
   workflow_dispatch:
 
 jobs:
@@ -15,22 +15,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Python 3.12
+      - name: Setup Python 3.12.0
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12"
+          python-version: "3.12.0-alpine"
 
-      - name: Build the image using Dockerfile
+      - name: Build and push the image
         env:
           GITHUB_SHA: ${{ github.sha }}
           DOCKER_IMAGE_NAME: argocd-python-app
-        run: |
-          docker image build . --file Dockerfile --tag $DOCKER_IMAGE_NAME:$GITHUB_SHA
-
-      - name: Push the image to container registry
-        env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
+          docker image build . --file Dockerfile --tag $DOCKER_IMAGE_NAME:$GITHUB_SHA
           docker image tag $DOCKER_IMAGE_NAME:$GITHUB_SHA $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$GITHUB_SHA
           docker image push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$GITHUB_SHA
