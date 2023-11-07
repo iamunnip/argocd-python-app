@@ -29,7 +29,8 @@ jobs:
       - name: Build and push the image
         env:
           GITHUB_SHA: ${{ github.sha }}
-          DOCKER_IMAGE_NAME: argocd-python-app
+          DOCKER_USERNAME: ${{ env.DOCKER_USERNAME }}
+          DOCKER_IMAGE_NAME: ${{ env.DOCKER_IMAGE_NAME }}
         run: |
           docker image build . --file Dockerfile --tag $DOCKER_IMAGE_NAME:$GITHUB_SHA
           docker image tag $DOCKER_IMAGE_NAME:$GITHUB_SHA $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$GITHUB_SHA
