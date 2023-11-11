@@ -32,4 +32,4 @@ jobs:
           context: .
           push: true
           tags: |
-            iamunnip/argocd-python-app:${{ github.sha | slice(0, 7) }}
+            iamunnip/argocd-python-app:${{ github.sha }}
